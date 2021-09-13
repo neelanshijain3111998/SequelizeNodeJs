@@ -76,7 +76,6 @@ if (!"analyzer".localeCompare(ID)) {
   console.log("Enter 2-For TestCase2 ");
   console.log("Enter 3-For TestCase3 ");
   console.log("Enter 4-For TestCase4 ");
-  console.log("Enter 5-For Exit ");
   console.log("Enter your choice:");
   const prompt = ps();
   let x = parseInt(prompt(""));
