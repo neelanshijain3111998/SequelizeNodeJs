@@ -4,6 +4,10 @@ const { Op } = require("sequelize");
 const fs = require("fs");
 
 //testcase4
+//SELECT `PRINCIPAL_BUSINESS_ACTIVITY_AS_PER_CIN`, COUNT(`PRINCIPAL_BUSINESS_ACTIVITY_AS_PER_CIN`)
+//AS `count` FROM `rajasthans` AS `rajasthans` WHERE `rajasthans`.`Year` = 2000 GROUP BY `PRINCIPAL_BUSINESS_ACTIVITY_AS_PER_CIN`;
+//SELECT `PRINCIPAL_BUSINESS_ACTIVITY_AS_PER_CIN`, COUNT(`PRINCIPAL_BUSINESS_ACTIVITY_AS_PER_CIN`)
+// AS `count` FROM `rajasthans` AS `rajasthans` WHERE `rajasthans`.`Year` = 2001 GROUP BY `PRINCIPAL_BUSINESS_ACTIVITY_AS_PER_CIN`;
 async function testcase4() {
   obj = {};
   for (let i = 2000; i <= 2019; i++) {

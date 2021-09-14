@@ -5,6 +5,9 @@ const fs = require("fs");
 
 //testcase3
 //method1 using .then
+
+//SELECT `PRINCIPAL_BUSINESS_ACTIVITY_AS_PER_CIN`, COUNT(`PRINCIPAL_BUSINESS_ACTIVITY_AS_PER_CIN`)
+// AS `count` FROM `rajasthans` AS `rajasthans` WHERE `rajasthans`.`Year` = 2015 GROUP BY `PRINCIPAL_BUSINESS_ACTIVITY_AS_PER_CIN`;
 function testcase3() {
   Rajasthan.findAll({
     attributes: [
@@ -17,7 +20,7 @@ function testcase3() {
         "count",
       ],
     ],
-    where: { Year: 2006 },
+    where: { Year: 2015 },
     group: ["PRINCIPAL_BUSINESS_ACTIVITY_AS_PER_CIN"],
     raw: true,
   })

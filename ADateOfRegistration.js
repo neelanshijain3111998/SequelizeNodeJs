@@ -4,6 +4,10 @@ const { Op } = require("sequelize");
 const fs = require("fs");
 
 //method1 using .then
+//SELECT `Year`, COUNT(`Year`) AS `count` FROM `rajasthans` AS `rajasthans` WHERE
+// `rajasthans`.`Year` BETWEEN 2000 AND 2019 GROUP BY `Year` ORDER BY `rajasthans`.`Year`;
+
+//read the whole table from the database with the findAll method:
 function testcase2() {
   Rajasthan.findAll({
     attributes: [
