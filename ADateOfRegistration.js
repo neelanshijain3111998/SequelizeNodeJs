@@ -3,6 +3,7 @@ const Rajasthan = require("./Table");
 const { Op } = require("sequelize");
 const fs = require("fs");
 
+//method1 using .then
 function testcase2() {
   Rajasthan.findAll({
     attributes: [
@@ -12,7 +13,6 @@ function testcase2() {
     where: { Year: { [Op.between]: [2000, 2019] } },
     group: ["Year"],
     order: ["Year"],
-
     raw: true,
   })
     .then((Auth2) => {
@@ -31,6 +31,7 @@ function testcase2() {
     });
 }
 
+//Method2 using async await
 /*async function testcase2() {
   const test2 = await Rajasthan.findAll({
     attributes: [

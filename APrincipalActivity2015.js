@@ -2,8 +2,9 @@ const sequelize = require("./SequelizeConnection");
 const Rajasthan = require("./Table");
 const { Op } = require("sequelize");
 const fs = require("fs");
-//testcase3
 
+//testcase3
+//method1 using .then
 function testcase3() {
   Rajasthan.findAll({
     attributes: [
@@ -34,6 +35,8 @@ function testcase3() {
       });
     });
 }
+
+//method2 using async/await
 /*
   async function testcase3() {
     let test3 = await Rajasthan.findAll({

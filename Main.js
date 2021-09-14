@@ -2,16 +2,89 @@ const sequelize = require("./SequelizeConnection");
 const Rajasthan = require("./Table");
 const csv = require("csv-parser");
 const fs = require("fs");
+const mysql = require("mysql2");
 
-("use strict"); //User input using prompt-sync
+("use strict"); //User input(load,analyzer) using prompt-sync
 const ps = require("prompt-sync");
-
 const prompt = ps();
 let ID = prompt("");
 
+//Loader part
 //localeCompare return 0 if both string are same
 if (!"load".localeCompare(ID)) {
-  var mysql = require("mysql");
+  //create mysql connection
+  const conn = mysql.createConnection({
+    host: "localhost",
+    port: "3306",
+    user: "root",
+    password: "neel@123",
+  });
+
+  // create database if it doesn't already exist
+  conn.connect(function (err) {
+    if (err) {
+      console.log("Error connecting to Database", err);
+      return;
+    }
+    console.log("Connection established");
+    conn.query(`CREATE DATABASE IF NOT EXISTS nodejs;`, (error) => {
+      if (error) throw error;
+
+      console.log("database created");
+    });
+  });
+
+  let Arrayy = [];
+  //model.sync(options), an asynchronous function (that returns a Promise).
+  // With this call, Sequelize will automatically perform an SQL query to the database.
+  // This creates the table if it doesn't exist (and does nothing if it already exists)
+  sequelize
+    .sync()
+    .then((result) => {
+      console.log(result);
+      fs.createReadStream("Rajasthan1.csv")
+        .pipe(csv())
+        .on("data", (data) => {
+          const yr = data.DATE_OF_REGISTRATION;
+
+          if (yr !== "NA") {
+            let x = yr.split("-");
+
+            if (parseInt(x[2]) >= 0 && parseInt(x[2]) < 20) {
+              year = "20" + x[2];
+              year = year;
+              //console.log(year);
+            } else {
+              year = 0;
+            }
+          } else {
+            year = 0;
+          }
+          Arrayy.push({
+            CORPORATE_IDENTIFICATION_NUMBER:
+              data.CORPORATE_IDENTIFICATION_NUMBER,
+            Company_Name: data.Company_Name,
+            DATE_OF_REGISTRATION: data.DATE_OF_REGISTRATION,
+            Year: year,
+            AUTHORIZED_CAP: data.AUTHORIZED_CAP,
+            PRINCIPAL_BUSINESS_ACTIVITY_AS_PER_CIN:
+              data.PRINCIPAL_BUSINESS_ACTIVITY_AS_PER_CIN,
+          });
+        })
+        .on("end", () => {
+          Rajasthan.bulkCreate(Arrayy);
+        });
+    })
+    .then((result) => {
+      console.log("Values inserted in table\n" + result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+} /*
+//localeCompare return 0 if both string are same
+if (!"load".localeCompare(ID)) {
+  var mysql = require("mysql2");
   var conn = mysql.createConnection({
     host: "localhost",
     user: "root",
@@ -21,26 +94,50 @@ if (!"load".localeCompare(ID)) {
   conn.connect(function (err) {
     if (err) throw err;
     //console.log("connection successful...");
-    conn.query(
-      `
-      CREATE DATABASE IF NOT EXISTS nodejs;`,
-      function (error) {
-        if (error) throw error;
+    conn.query(`CREATE DATABASE IF NOT EXISTS nodejs;`, function (error) {
+      if (error) throw error;
 
-        //console.log("db created");
-        conn.end();
-      }
-    );
+      console.log("db created");
+    });
   });
 
+  let Arrayy = [];
   //model.sync(options), an asynchronous function (that returns a Promise).
   // With this call, Sequelize will automatically perform an SQL query to the database.
-  (async () => {
-    await sequelize.sync();
+  async function Tablecreate() {
+    try {
+      await sequelize.sync();
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
-    fs.createReadStream("Rajasthan.csv")
-      .pipe(csv())
-      .on("data", (data) => {
+  Tablecreate();
+  fs.createReadStream("Rajasthan1.csv")
+    .pipe(csv())
+    .on("data", (data) => {
+      Arrayy.push({
+        Company_Name: data.Company_Name,
+
+        Company_status: data.Company_status,
+        Company_class: data.Company_class,
+        Company_Category: data.Company_Category,
+        Company_sub_category: data.Company_sub_category,
+        DATE_OF_REGISTRATION: data.DATE_OF_REGISTRATION,
+        Year: parseInt(DateYear(data.DATE_OF_REGISTRATION)),
+        REGISTERED_STATE: data.REGISTERED_STATE,
+        AUTHORIZED_CAP: data.AUTHORIZED_CAP,
+        PAIDUP_CAPITAL: data.PAIDUP_CAPITAL,
+        Industrial_Class: data.Industrial_Class,
+        PRINCIPAL_BUSINESS_ACTIVITY_AS_PER_CIN:
+          data.PRINCIPAL_BUSINESS_ACTIVITY_AS_PER_CIN,
+        Registered_Office_Address: data.Registered_Office_Address,
+        REGISTRAR_OF_COMPANIES: data.REGISTRAR_OF_COMPANIES,
+        EMAIL_ADDR: data.EMAIL_ADDR,
+        Latest_Year_AR: data.Latest_Year_AR,
+        Latest_Year_BS: data.PAIDUP_CAPITAL,
+      });
+      /*
         Rajasthan.create({
           Company_Name: data.Company_Name,
 
@@ -64,12 +161,19 @@ if (!"load".localeCompare(ID)) {
         });
 
         // console.log(result);
-      })
-      .on("end", () => {
-        console.log("Table created");
-      });
-  })();
+    })
+    .on("end", () => {
+      console.log(Arrayy);
+
+      loadbulk(Arrayy);
+    });
+  async function loadbulk(data) {
+    await Rajasthan.bulkCreate(data)
+      .then(() => console.log("success"))
+      .catch((err) => console.log(err));
+  }
 }
+*/
 if (!"analyzer".localeCompare(ID)) {
   console.log("\n-----Data Project 2: Company Master------");
   console.log("Enter 1-For TestCase1 ");
@@ -103,7 +207,7 @@ if (!"analyzer".localeCompare(ID)) {
       break;
   }
 }
-
+/*
 const DateYear = (FUllDate) => {
   if (FUllDate != "NA") {
     //fetch the year
@@ -112,6 +216,11 @@ const DateYear = (FUllDate) => {
     if (parseInt(x[2]) >= 0 && parseInt(x[2]) < 20) {
       year = "20" + x[2];
       return year;
+    } else {
+      return "0000";
     }
+  } else {
+    return "0000";
   }
 };
+*/
