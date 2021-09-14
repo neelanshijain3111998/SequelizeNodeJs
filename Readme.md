@@ -1,5 +1,11 @@
 # DataProject-Sequelize
 
+Methods use to solve testcases-
+>- AAuthorizedCap.js (method-Async/await)
+>- ADateOfRegistration.js (method1-.then ,method2-Async/await)
+>- APrincipalActivity2015.js (method-.then ,method2-Async/await)
+>- AGroupedAggregation.js (method- Async/await)
+
 
 Here are the steps to download and run the program in visual studio code.
 
@@ -7,6 +13,7 @@ Here are the steps to download and run the program in visual studio code.
 >   `git clone git@github.com:neelanshijain3111998/SequelizeNodeJs.git`.
 > - Then, you will get all the files in your folder.
 > - Open visual studio code from this folder.
+
 
 How to run the Project
 
@@ -25,3 +32,4 @@ How to run the Project
 >    Enter 4-For TestCase4 
 > - Enter your choice:1 (It will generate Json file for testcase1....so on)
 > - Follow above steps for generating Json file for all testcases.
+
