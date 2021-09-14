@@ -12,11 +12,11 @@ How to run the Project
 
 > - Open Terminal
 > - Run **Main.js**- $node Main.js 
-> 
+ 
 > - First Type **load** (if Database is not exist then it will create Database).
 > - Again Run **Main.js**- $node Main.js 
 > - Again Type **load** (for checking table exist or not, if not exist it will create table and store data)
-> 
+
 > - Type **analyzer** (for testcase1)     
 > -   -----Data Project 2: Company Master------
 >    Enter 1-For TestCase1 
